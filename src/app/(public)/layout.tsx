@@ -1,12 +1,11 @@
 import Navbar from "@/components/shared/Navbar";
 import React from "react";
 
-
-const PublicLayout = ({children}: {children: React.ReactNode}) => {
+const PublicLayout = ({ children }: { children: React.ReactNode }) => {
     return (
-        <div>
-            <Navbar/>
-            <main>{children}</main>
+        <div className="min-h-screen bg-[#04081A]">
+            <Navbar />
+            <main className="pt-20 px-4 md:px-8">{children}</main>
         </div>
     );
 };

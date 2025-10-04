@@ -1,9 +1,10 @@
+import HomeCard from "@/components/modules/Home/HomeCard";
 
 
 export default function HomePage() {
   return (
-    <div>
-      <h1>this is home page</h1>
+    <div className="">
+        <HomeCard/>
     </div>
   );
 }
