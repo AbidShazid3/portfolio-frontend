@@ -11,8 +11,8 @@ const ProjectPage = async() => {
 
     return (
         <div className="text-white">
-            <h2 className="text-5xl md:text-7xl font-black leading-[1.3] text-transparent bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-center">Core Technologies</h2>
-            <div className="grid md:grid-cols-1 2xl:grid-cols-2 gap-5 mt-10 pb-10">
+            <h2 className="text-5xl md:text-7xl font-black leading-[1.3] text-transparent bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-center">What I’ve Built</h2>
+            <div className="grid md:grid-cols-1 2xl:grid-cols-2 gap-10 2xl:gap-5 mt-10 pb-10">
                 {projects.map((project:Project) => <ProjectCard key={project.id} project={project}></ProjectCard>)}
             </div>
         </div>
