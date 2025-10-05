@@ -1,6 +1,5 @@
-"use client"
-
-import { Typewriter } from "react-simple-typewriter";
+import Link from "next/link";
+import TypingTitle from "./TypingTitle";
 
 const floatingTags = [
     {
@@ -43,7 +42,7 @@ const codeBlock = `const profile = {
 const HomeCard = () => {
     return (
         <section className="text-white flex items-center justify-center min-h-[calc(100vh-80px)]">
-            <div className="container mx-auto max-w-[1600px] 2xl:max-w-[1800px] grid lg:grid-cols-2 gap-10 items-center">
+            <div className="container mx-auto max-w-[1600px] 2xl:max-w-[1800px] grid lg:grid-cols-2 gap-5 md:gap-10 items-center">
                 {/* Left Content */}
                 <div className="space-y-5 relative">
                     <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 animate__animated animate__fadeInDown animate__delay-1s">
@@ -64,32 +63,26 @@ const HomeCard = () => {
                         </h1>
                     </div>
 
-                    <h1 className="text-2xl md:text-3xl xl:text-4xl font-bold">
-                        a {""}{""}
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-red-700">
-                            <Typewriter
-                                words={["Full-Stack Developer", "MERN Developer", "Quick Learner"]}
-                                loop={true}
-                                cursor
-                                cursorStyle="|"
-                                typeSpeed={70}
-                                deleteSpeed={50}
-                                delaySpeed={1000}
-                            />
-                        </span>
-                    </h1>
+                    <TypingTitle />
 
                     <p className="text-gray-400 text-lg">
                         Building scalable web apps | Crafting developer tools | Automating workflows
                     </p>
 
                     <div className="flex gap-4 pt-3">
-                        <button className="px-6 py-2 rounded-2xl bg-cyan-900 hover:bg-cyan-600 transition cursor-pointer"
-                        onClick={() => window.open("https://github.com/AbidShazid3", "_blank")}>
-                            Learn More
+                        <button className="px-6 py-2 rounded-2xl bg-cyan-900 hover:bg-cyan-600 transition cursor-pointer">
+                            <Link
+                                href={"https://github.com/AbidShazid3"}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >Learn More</Link>
                         </button>
                         <button className="px-6 py-2 rounded-2xl bg-gray-800 border border-gray-600 hover:bg-gray-700 transition">
-                            Get Resume
+                            <Link
+                                href={"https://drive.google.com/file/d/1SjrrENkowtbzCzhisQM0KcJZ63ZTt8q6/view?usp=drive_link"}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >Get Resume</Link>
                         </button>
                     </div>
 
