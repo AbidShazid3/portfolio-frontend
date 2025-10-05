@@ -25,9 +25,9 @@ import Logo from "./logo"
 const navigationLinks = [
   { href: "/", label: "Home" },
   { href: "/about-me", label: "About Me" },
-  { href: "/skills", label: "Skills" },
+  { href: "/skill", label: "Skills" },
   { href: "/experience", label: "Experience" },
-  { href: "/projects", label: "Projects" },
+  { href: "/project", label: "Projects" },
   { href: "/blogs", label: "Blogs" },
   { href: "/contact", label: "Contact" },
   { href: "/dashboard", label: "Dashboard" },

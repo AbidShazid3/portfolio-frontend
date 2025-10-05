@@ -2,7 +2,6 @@ import { AboutMe } from '@/types';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-import ExperienceCard from '../Experience/ExperienceCard';
 
 const AboutMeCard = ({ about }: { about: AboutMe }) => {
     return (
@@ -46,22 +45,19 @@ const AboutMeCard = ({ about }: { about: AboutMe }) => {
             {/* Skills */}
             <div className="mt-10 lg:mt-16 text-white space-y-3">
                 <h2 className="text-3xl font-semibold text-center underline underline-offset-8 mb-7">Skills</h2>
-                <div className="flex items-center justify-center flex-wrap gap-2">
-                    {about?.skills.map((skill, idx) => (
-                        <span
-                            key={idx}
-                            className="font-semibold bg-gray-100 text-gray-800 px-3 py-1 rounded-full"
-                        >
-                            {skill.name}
-                        </span>
+                <div className="flex items-center flex-wrap gap-3">
+                    {about?.skills?.map((skill) => (
+                        <div key={skill.id} className="group/badge relative rounded-full bg-gray-800/90 hover:bg-gray-700/80 text-gray-100 border-gray-600 flex items-center gap-2 py-1.5 px-4 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/20">
+                            <Image
+                                src={skill?.iconUrl || ""}
+                                alt={skill?.name}
+                                width={20}
+                                height={20}
+                                className="w-5 h-5 object-contain transform group-hover/badge:scale-110 transition-transform duration-300"
+                            />
+                            <span className="text-sm font-medium">{skill?.name}</span>
+                        </div>
                     ))}
-                </div>
-            </div>
-
-            <div className="mt-10 lg:mt-16 text-white">
-                <h2 className="text-3xl font-semibold text-center underline underline-offset-8 mb-7">Experience</h2>
-                <div className="grid md:grid-cols-3 gap-5">
-                    {about?.experience.map((exp) => <ExperienceCard key={exp.id} exp={exp}></ExperienceCard>)}
                 </div>
             </div>
 
