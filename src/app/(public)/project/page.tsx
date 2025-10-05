@@ -1,9 +1,20 @@
+import ProjectCard from '@/components/modules/Project/ProjectCard';
+import { Project } from '@/types';
 import React from 'react';
 
-const ProjectPage = () => {
+const ProjectPage = async() => {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/project`)
+    if (!res.ok) {
+        throw new Error('Failed to fetch project data');
+    }
+    const { data: projects } = await res.json();
+
     return (
-        <div>
-            
+        <div className="text-white">
+            <h2 className="text-5xl md:text-7xl font-black leading-[1.3] text-transparent bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-center">Core Technologies</h2>
+            <div className="grid md:grid-cols-1 2xl:grid-cols-2 gap-5 mt-10 pb-10">
+                {projects.map((project:Project) => <ProjectCard key={project.id} project={project}></ProjectCard>)}
+            </div>
         </div>
     );
 };

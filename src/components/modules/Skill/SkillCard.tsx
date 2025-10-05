@@ -14,7 +14,7 @@ const SkillCard = ({ skill }: { skill: SkillCategory }) => {
 
             <div className="flex items-center flex-wrap gap-2 mt-6">
                 {skill?.skills?.map((sk) => (
-                    <div key={sk.id} className="group/badge relative rounded-full bg-gray-800/90 hover:bg-gray-700/80 text-gray-100 border-gray-600 flex items-center gap-2 py-1.5 px-4 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/20">
+                    <div key={sk.id} className="group/badge relative rounded-full bg-gray-800/90 hover:bg-gray-700/80 text-gray-100 border-gray-600 flex items-center gap-2 py-1.5 px-3 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/20">
                         <Image
                             src={sk?.iconUrl || ""}
                             alt={sk?.name}
