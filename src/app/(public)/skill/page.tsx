@@ -1,6 +1,12 @@
 import SkillCard from '@/components/modules/Skill/SkillCard';
 import { SkillCategory } from '@/types';
+import { Metadata } from 'next';
 import React from 'react';
+
+export const metadata: Metadata = {
+  title: "Skills",
+  description:"Showcasing core web development skills including HTML, CSS, JavaScript, React, Node.js, and modern tools that power efficient and scalable applications.",
+};
 
 const SkillPage = async () => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/skill/category`)

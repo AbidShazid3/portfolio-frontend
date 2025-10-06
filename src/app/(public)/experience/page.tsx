@@ -1,6 +1,12 @@
 import ExperienceCard from '@/components/modules/Experience/ExperienceCard';
 import { Experience } from '@/types';
+import { Metadata } from 'next';
 import React from 'react';
+
+export const metadata: Metadata = {
+  title: "Experiences",
+  description:"Showcasing professional experiences in web development, building scalable applications, optimizing performance, and delivering impactful digital solutions.",
+};
 
 const ExperiencePage = async() => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/experience`)

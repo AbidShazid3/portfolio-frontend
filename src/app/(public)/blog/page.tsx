@@ -4,7 +4,7 @@ import { Metadata } from "next";
 
 
 export const metadata: Metadata = {
-  title: "All Blogs | Next Blog",
+  title: "All Blogs",
   description:
     "Browse all blog posts on web development, Next.js, React, and more. Stay updated with the latest tutorials and articles.",
 };
