@@ -28,8 +28,8 @@ const navigationLinks = [
   { href: "/skill", label: "Skills" },
   { href: "/experience", label: "Experience" },
   { href: "/project", label: "Projects" },
-  { href: "/blogs", label: "Blogs" },
-  { href: "/contact", label: "Contact" },
+  { href: "/blog", label: "Blogs" },
+  // { href: "/contact", label: "Contact" },
   { href: "/dashboard", label: "Dashboard" },
 ]
 
