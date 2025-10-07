@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/table"
 import { Project } from '@/types';
 import ProjectTable from '@/components/modules/Project/ProjectTable';
+import AddProjectModal from '@/components/modules/Project/AddProjectModal';
 
 const ProjectsPage = async() => {
     const { data: projects } = await getProjects();
@@ -15,7 +16,7 @@ const ProjectsPage = async() => {
         <div>
             <div className="flex items-center justify-between my-5">
                 <h1 className="text-xl font-semibold">Total Blogs: {projects.length}</h1>
-                {/* <AddBlogModal/> */}
+                <AddProjectModal/>
             </div>
             <div className="border border-muted">
                 <Table>
