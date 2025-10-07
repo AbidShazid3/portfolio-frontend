@@ -4,6 +4,12 @@ import Link from "next/link";
 
 
 const BlogCard = ({ blog }: { blog: Blog }) => {
+    if (!blog) {
+        return (
+            <div className="flex items-center justify-center text-5xl font-medium text-red-500 min-h-[calc(100vh-80px)]">Blogs not found.</div>
+        );
+    }
+
     return (
         <Link
             href={`/blog/${blog?.id}`}

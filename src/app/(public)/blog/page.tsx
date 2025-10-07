@@ -1,4 +1,5 @@
 import BlogCard from "@/components/modules/Blog/BlogCard";
+import { getBlogs } from "@/services/BlogServices";
 import { Blog } from "@/types";
 import { Metadata } from "next";
 
@@ -10,11 +11,7 @@ export const metadata: Metadata = {
 };
 
 const BlogPage = async() => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/blog`)
-    if (!res.ok) {
-        throw new Error('Failed to fetch blog data');
-    }
-    const { data: blogs } = await res.json();
+    const { data: blogs } = await getBlogs();
 
     return (
         <div className="text-white">
