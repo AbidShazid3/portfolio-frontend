@@ -4,6 +4,11 @@ import Link from 'next/link';
 import React from 'react';
 
 const ProjectCard = ({ project }: { project: Project }) => {
+    if (!project) {
+        return (
+            <div className="flex items-center justify-center text-5xl font-medium text-red-500 min-h-[calc(100vh-80px)]">Project data not found.</div>
+        );
+    }
     return (
         <div className="flex flex-col lg:flex-row items-center bg-[#0d1117] text-white rounded-xl overflow-hidden shadow-lg">
             {/* Left Image */}

@@ -1,7 +1,6 @@
 import BlogTable from '@/components/modules/Blog/BlogTable';
 import { getBlogs } from '@/services/BlogServices';
 import { Blog } from '@/types';
-import React from 'react';
 import {
     Table,
     TableBody,

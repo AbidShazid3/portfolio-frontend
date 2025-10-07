@@ -1,4 +1,5 @@
 import ProjectCard from '@/components/modules/Project/ProjectCard';
+import { getProjects } from '@/services/ProjectServices';
 import { Project } from '@/types';
 import { Metadata } from 'next';
 import React from 'react';
@@ -9,11 +10,7 @@ export const metadata: Metadata = {
 };
 
 const ProjectPage = async() => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/project`)
-    if (!res.ok) {
-        throw new Error('Failed to fetch project data');
-    }
-    const { data: projects } = await res.json();
+    const { data: projects } = await getProjects();
 
     return (
         <div className="text-white">
