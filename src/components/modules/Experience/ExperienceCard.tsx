@@ -2,6 +2,12 @@ import { Experience } from "@/types";
 
 
 const ExperienceCard = ({ exp }: { exp: Experience }) => {
+    if (!exp) {
+        return (
+            <div className="flex items-center justify-center text-5xl font-medium text-red-500 min-h-[calc(100vh-80px)]">Experience not found.</div>
+        );
+    }
+
     return (
         <div
             className="relative bg-[#18183a] border border-cyan-800/30 rounded-2xl p-6 shadow-lg hover:shadow-cyan-500/20 transition duration-300 group group  hover:scale-[1.02] hover:shadow-xl"

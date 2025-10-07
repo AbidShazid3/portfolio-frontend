@@ -1,4 +1,5 @@
 import ExperienceCard from '@/components/modules/Experience/ExperienceCard';
+import { getExperiences } from '@/services/ExperienceServices';
 import { Experience } from '@/types';
 import { Metadata } from 'next';
 import React from 'react';
@@ -9,11 +10,7 @@ export const metadata: Metadata = {
 };
 
 const ExperiencePage = async() => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/experience`)
-    if (!res.ok) {
-        throw new Error('Failed to fetch experience data');
-    }
-    const {data: experience} = await res.json();
+    const {data: experience} = await getExperiences();
     return (
         <div className="text-white">
             <h2 className="text-5xl md:text-7xl font-black leading-[1.3] bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent text-center">Professional Journey</h2>
