@@ -28,7 +28,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
-const experiencSchema = z.object({
+const experienceSchema = z.object({
     role: z.string().min(1, "Role is required"),
     company: z.string().min(1, "Description is required"),
     startDate: z.string().min(1, "Start Date is required"),
@@ -39,8 +39,8 @@ const experiencSchema = z.object({
 const ExperienceModal = () => {
     const [open, setOpen] = useState(false);
     
-        const form = useForm<z.infer<typeof experiencSchema>>({
-            resolver: zodResolver(experiencSchema),
+        const form = useForm<z.infer<typeof experienceSchema>>({
+            resolver: zodResolver(experienceSchema),
             defaultValues: {
                 role: "",
                 company: "",
@@ -51,7 +51,7 @@ const ExperienceModal = () => {
         })
     
         const router = useRouter();
-        const onSubmit = async (data: z.infer<typeof experiencSchema>) => {
+        const onSubmit = async (data: z.infer<typeof experienceSchema>) => {
                 console.log(data);
                 try {
                     // const res = await createExperience(data);
