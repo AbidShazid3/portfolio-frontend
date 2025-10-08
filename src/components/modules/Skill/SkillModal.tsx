@@ -36,7 +36,7 @@ import {
 import { SkillCategory } from "@/types";
 
 const skillSchema = z.object({
-    name: z.string().min(1, "Role is required"),
+    name: z.string().min(1, "Skill name is required"),
     iconUrl: z.url("Icon Url must be a valid URL"),
     categoryId: z.string().min(1, "Category is required")
 })
