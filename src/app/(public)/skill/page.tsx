@@ -1,4 +1,5 @@
 import SkillCard from '@/components/modules/Skill/SkillCard';
+import { getCategories } from '@/services/CategoryServices';
 import { SkillCategory } from '@/types';
 import { Metadata } from 'next';
 import React from 'react';
@@ -9,11 +10,7 @@ export const metadata: Metadata = {
 };
 
 const SkillPage = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/skill/category`)
-    if (!res.ok) {
-        throw new Error('Failed to fetch skill data');
-    }
-    const { data: skills } = await res.json();
+    const { data: skills } = await getCategories();
 
     return (
         <div className="text-white">
