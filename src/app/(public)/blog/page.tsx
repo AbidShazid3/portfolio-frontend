@@ -10,6 +10,8 @@ export const metadata: Metadata = {
     "Browse all blog posts on web development, Next.js, React, and more. Stay updated with the latest tutorials and articles.",
 };
 
+export const revalidate = 30;
+
 const BlogPage = async() => {
     const { data: blogs } = await getBlogs();
 

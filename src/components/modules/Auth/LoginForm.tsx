@@ -5,15 +5,18 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button"
 import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { showError } from "@/utils/showError";
 
 export const loginSchema = z.object({
     email: z
@@ -42,19 +45,31 @@ const LoginForm = () => {
         }
     })
 
-    // const router = useRouter();
+    const router = useRouter();
     const onSubmit = async (data: z.infer<typeof loginSchema>) => {
-        console.log(data);
+
         try {
-            // const res = await login(data);
-            // if (res?.id) {
-            //     toast.success("User Login Successfully");
-            //     router.push('/');
-            // } else {
-            //     toast.error("User Login Failed")
-            // }
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/auth/login`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+                credentials: "include",
+            });
+
+            if (!res.ok) {
+                const errorText = await res.text();
+                throw new Error(errorText || "Login failed");
+            }
+
+            const result = await res.json();
+            console.log(result);
+            toast.success(result.message)
+            router.push('/');
+
         } catch (error) {
-            console.log(error);
+            showError(error);
         }
     }
 

@@ -21,7 +21,7 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
                             src={blog?.thumbnail}
                             alt={blog?.title}
                             fill
-                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                             className="object-cover group-hover:scale-105 transition-transform duration-300 rounded-t-2xl group-hover:rounded-t-2xl"
                         />
                     </div>
@@ -56,13 +56,7 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
                             </span>
                         </div>
 
-                        <span className="text-gray-300">
-                            {blog?.views} views
-                        </span>
-                    </div>
-
-                    <div className="text-right">
-                        <span className="text-blue-600 font-semibold text-sm hover:underline">
+                        <span className="text-blue-500 font-semibold text-sm hover:underline">
                             Read More →
                         </span>
                     </div>
