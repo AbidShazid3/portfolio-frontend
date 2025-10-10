@@ -22,26 +22,27 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { showError } from "@/utils/showError";
-import { User } from "@/types";
 import { toast } from "sonner";
-import { createBlog } from "@/actions/blog";
+import { createBlog, updateBlog } from "@/actions/blog";
+import { Pencil } from "lucide-react";
+import { Blog } from "@/types";
 
-export const createBlogSchema = z.object({
+export const updateBlogSchema = z.object({
     title: z.string().min(1, "Title is required"),
     content: z.string().min(1, "Content is required"),
     thumbnail: z.url("Thumbnail must be a valid URL").optional(),
     tags: z.string().min(1, "Tags is required"),
 })
 
-const AddBlogModal = ({ user }: { user: User }) => {
+const UpdateBlogModal = ({ blog }: { blog: Blog }) => {
     const [open, setOpen] = useState(false);
 
-    const form = useForm<z.infer<typeof createBlogSchema>>({
-        resolver: zodResolver(createBlogSchema),
+    const form = useForm<z.infer<typeof updateBlogSchema>>({
+        resolver: zodResolver(updateBlogSchema),
         defaultValues: {
             title: "",
             content: "",
@@ -50,29 +51,38 @@ const AddBlogModal = ({ user }: { user: User }) => {
         },
     })
 
+    useEffect(() => {
+        if (open && blog) {
+            form.reset({
+                title: blog.title,
+                content: blog.content,
+                thumbnail: blog.thumbnail || "",
+                tags: blog.tags?.join(", ") || "",
+            });
+        }
+    }, [open, blog, form]);
 
-    const onSubmit = async (data: z.infer<typeof createBlogSchema>) => {
+
+    const onSubmit = async (data: z.infer<typeof updateBlogSchema>) => {
         const modifiedData = {
             ...data,
             tags: data.tags
                 .toString()
                 .split(",")
                 .map((tag) => tag.trim()),
-            authorId: user.id
         }
         try {
-            const result = await createBlog(modifiedData);
-            toast.success(result?.message || "Blog created successfully!");
+            const result = await updateBlog(blog.id,modifiedData);
+            toast.success(result?.message || "Blog updated successfully!");
             setOpen(false)
         } catch (error) {
             showError(error)
         }
     }
-
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button className="cursor-pointer" variant={"secondary"}>Add Blog</Button>
+                <Button className="cursor-pointer" size={"sm"}><Pencil /></Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
@@ -81,7 +91,7 @@ const AddBlogModal = ({ user }: { user: User }) => {
                     </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
-                    <form id='add-blog' onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+                    <form id='update-blog' onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
                         <FormField
                             control={form.control}
                             name="title"
@@ -153,7 +163,7 @@ const AddBlogModal = ({ user }: { user: User }) => {
                     </DialogClose>
                     <Button
                         // disabled={isLoading}
-                        form="add-blog" type="submit" variant="ghost" className="cursor-pointer hover:text-green-500">
+                        form="update-blog" type="submit" variant="ghost" className="cursor-pointer hover:text-green-500">
                         {/* {isLoading ? ("Submitting...") : ("Submit")} */}
                         Submit
                     </Button>
@@ -163,4 +173,4 @@ const AddBlogModal = ({ user }: { user: User }) => {
     );
 };
 
-export default AddBlogModal;
+export default UpdateBlogModal;

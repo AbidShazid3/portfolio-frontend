@@ -23,14 +23,13 @@ import Logo from "./logo"
 
 // Navigation links array
 const navigationLinks = [
-  { href: "/", label: "Home" },
+  { href: "/", label: "Home", },
   { href: "/about-me", label: "About Me" },
   { href: "/skill", label: "Skills" },
   { href: "/experience", label: "Experience" },
   { href: "/project", label: "Projects" },
   { href: "/blog", label: "Blogs" },
   // { href: "/contact", label: "Contact" },
-  { href: "/dashboard", label: "Dashboard" },
 ]
 
 export default function Navbar() {
@@ -54,10 +53,10 @@ export default function Navbar() {
               <SheetHeader>
                 <SheetTitle>
                   {/* Logo */}
-                  <Logo/>
+                  <Logo />
                 </SheetTitle>
                 <SheetDescription className="sr-only">
-                    Use this menu to navigate through the website
+                  Use this menu to navigate through the website
                 </SheetDescription>
               </SheetHeader>
 
@@ -91,7 +90,7 @@ export default function Navbar() {
           </Sheet>
 
           {/* Logo */}
-          <Logo/>
+          <Logo />
         </div>
 
         {/* Right Side: Desktop Navigation + Auth */}
@@ -120,15 +119,33 @@ export default function Navbar() {
             </NavigationMenuList>
           </NavigationMenu>
 
-          <div>
-            {/* Auth Button */}
-            {/* <Button variant="outline" size="sm">
-              Logout
-            </Button> */}
-            <Button asChild variant={"destructive"} size="sm">
-              <Link href="/login">Login</Link>
-            </Button>
-          </div>
+          {/* <div>
+            {user ? (
+              <div className="flex items-center gap-3">
+                <span className="text-gray-300 text-sm">Hi, {user?.name}</span>
+                <Button asChild variant="outline" size="sm">
+                  <Link href="/dashboard">Dashboard</Link>
+                </Button>
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={async () => {
+                    await fetch("http://localhost:5000/api/v1/auth/logout", {
+                      method: "POST",
+                      credentials: "include",
+                    });
+                    setUser(null);
+                  }}
+                >
+                  Logout
+                </Button>
+              </div>
+            ) : (
+              <Button asChild variant="destructive" size="sm">
+                <Link href="/login">Login</Link>
+              </Button>
+            )}
+          </div> */}
         </div>
       </div>
     </header>

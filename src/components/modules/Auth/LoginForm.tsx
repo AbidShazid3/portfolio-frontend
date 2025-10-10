@@ -66,7 +66,7 @@ const LoginForm = () => {
             const result = await res.json();
             console.log(result);
             toast.success(result.message)
-            router.push('/');
+            router.push('/dashboard');
 
         } catch (error) {
             showError(error);

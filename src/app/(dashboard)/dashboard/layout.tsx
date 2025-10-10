@@ -1,13 +1,21 @@
+import { getUser } from '@/actions/auth';
 import { AppSidebar } from '@/components/shared/app-sidebar';
 import { Separator } from "@/components/ui/separator"
 import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
+    SidebarInset,
+    SidebarProvider,
+    SidebarTrigger,
 } from "@/components/ui/sidebar"
+import { Role } from '@/types';
+import { redirect } from 'next/navigation';
 
-const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
-
+const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
+    const user = await getUser();
+    if (!user || !user.data) {
+        redirect("/login");
+    } else if (user.data.role !== Role.ADMIN) {
+        redirect("/login");
+    }
 
     return (
         <SidebarProvider >

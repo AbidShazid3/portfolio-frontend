@@ -9,14 +9,17 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import AddBlogModal from '@/components/modules/Blog/AddBlogModal';
+import { getUser } from '@/actions/auth';
 
 const BlogsPage = async () => {
     const { data: blogs } = await getBlogs();
+    const {data: user} = await getUser();
+
     return (
         <div>
             <div className="flex items-center justify-between my-5">
                 <h1 className="text-xl font-semibold">Total Blogs: {blogs.length}</h1>
-                <AddBlogModal/>
+                <AddBlogModal user={user} />
             </div>
             <div className="border border-muted">
                 <Table>

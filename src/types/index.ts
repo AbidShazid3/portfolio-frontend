@@ -46,6 +46,14 @@ export enum Role {
   USER = "USER",
 }
 
+export interface User {
+  id: number;
+  name: string;
+  email: string;
+  role: Role;
+  createdAt: string;
+}
+
 export interface AboutMe {
   id: number;
   name: string;
