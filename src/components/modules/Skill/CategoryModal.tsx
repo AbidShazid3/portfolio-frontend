@@ -48,7 +48,8 @@ const CategoryModal = () => {
         try {
             const result = await createCategory(data);
             toast.success(result?.message || "Skill Category created successfully!");
-            setOpen(false)
+            setOpen(false);
+            form.reset();
         } catch (error) {
             showError(error)
         }

@@ -70,7 +70,8 @@ const AddAboutMeModal = () => {
         try {
             const result = await createAboutMe(aboutData);
             toast.success(result?.message || "About me crated successfully!");
-            setOpen(false)
+            setOpen(false);
+            form.reset();
         } catch (error) {
             showError(error)
         }

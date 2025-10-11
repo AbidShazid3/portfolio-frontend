@@ -76,6 +76,7 @@ const AddProjectModal = ({ user }: { user: User }) => {
             const result = await createBlog(modifiedData);
             toast.success(result?.message || "Blog created successfully!");
             setOpen(false)
+            form.reset();
         } catch (error) {
             showError(error)
         }

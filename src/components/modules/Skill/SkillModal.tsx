@@ -64,6 +64,7 @@ const SkillModal = ({ categories }: { categories: SkillCategory[] }) => {
             const result = await createSkill(skillData);
             toast.success(result?.message || "Skill created successfully!");
             setOpen(false)
+            form.reset();
         } catch (error) {
             showError(error)
         }

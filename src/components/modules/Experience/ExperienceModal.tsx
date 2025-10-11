@@ -53,11 +53,12 @@ const ExperienceModal = () => {
     })
 
     const onSubmit = async (data: z.infer<typeof experienceSchema>) => {
-        console.log(data);
+
         try {
             const result = await createExperience(data);
             toast.success(result?.message || "Experience created successfully!");
             setOpen(false)
+            form.reset();
         } catch (error) {
             showError(error)
         }
