@@ -22,32 +22,42 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { createCategory } from "@/actions/category";
+import { updateCategory } from "@/actions/category";
 import { toast } from "sonner";
 import { showError } from "@/utils/showError";
+import { Pencil } from "lucide-react";
+import { SkillCategory } from "@/types";
 
-const categorySchema = z.object({
+const updateCategorySchema = z.object({
     name: z.string().min(1, "Category name is required")
 })
 
-const CategoryModal = () => {
+const UpdateCategoryModel = ({category} : {category: SkillCategory}) => {
     const [open, setOpen] = useState(false);
 
-    const form = useForm<z.infer<typeof categorySchema>>({
-        resolver: zodResolver(categorySchema),
+    const form = useForm<z.infer<typeof updateCategorySchema>>({
+        resolver: zodResolver(updateCategorySchema),
         defaultValues: {
             name: "",
         },
     })
 
-    const onSubmit = async (data: z.infer<typeof categorySchema>) => {
+    useEffect(() => {
+            if (open && category) {
+                form.reset({
+                    name: category.name,
+                });
+            }
+        }, [open, category, form]);
+
+    const onSubmit = async (data: z.infer<typeof updateCategorySchema>) => {
         console.log(data);
         try {
-            const result = await createCategory(data);
-            toast.success(result?.message || "Skill Category created successfully!");
+            const result = await updateCategory( category.id,data);
+            toast.success(result?.message || "Skill Category updated successfully!");
             setOpen(false)
         } catch (error) {
             showError(error)
@@ -57,7 +67,7 @@ const CategoryModal = () => {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button className="cursor-pointer" variant={"secondary"}>Add Category</Button>
+                <Button className="cursor-pointer hover:text-yellow-500" size={"sm"}><Pencil /></Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px] max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
@@ -65,7 +75,7 @@ const CategoryModal = () => {
                     <DialogDescription></DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
-                    <form id='add-category' onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+                    <form id='update-category' onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
                         <FormField
                             control={form.control}
                             name="name"
@@ -93,7 +103,7 @@ const CategoryModal = () => {
                     </DialogClose>
                     <Button
                         // disabled={isLoading}
-                        form="add-category" type="submit" variant="ghost" className="cursor-pointer hover:text-green-500">
+                        form="update-category" type="submit" variant="ghost" className="cursor-pointer hover:text-green-500">
                         {/* {isLoading ? ("Submitting...") : ("Submit")} */}
                         Submit
                     </Button>
@@ -103,4 +113,4 @@ const CategoryModal = () => {
     );
 };
 
-export default CategoryModal;
+export default UpdateCategoryModel;
