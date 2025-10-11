@@ -22,15 +22,17 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { createExperience } from "@/actions/experience";
+import { updateExperience } from "@/actions/experience";
 import { toast } from "sonner";
+import { Pencil } from "lucide-react";
+import { Experience } from "@/types";
 import { showError } from "@/utils/showError";
 
-const experienceSchema = z.object({
+const updateExperienceSchema = z.object({
     role: z.string().min(1, "Role is required"),
     company: z.string().min(1, "Description is required"),
     startDate: z.string().min(1, "Start Date is required"),
@@ -38,11 +40,13 @@ const experienceSchema = z.object({
     description: z.string().min(1, "Description is required"),
 })
 
-const ExperienceModal = () => {
+
+
+const UpdateExperienceModal = ({exp}: {exp: Experience}) => {
     const [open, setOpen] = useState(false);
 
-    const form = useForm<z.infer<typeof experienceSchema>>({
-        resolver: zodResolver(experienceSchema),
+    const form = useForm<z.infer<typeof updateExperienceSchema>>({
+        resolver: zodResolver(updateExperienceSchema),
         defaultValues: {
             role: "",
             company: "",
@@ -52,11 +56,23 @@ const ExperienceModal = () => {
         },
     })
 
-    const onSubmit = async (data: z.infer<typeof experienceSchema>) => {
+    useEffect(() => {
+        if (open && exp) {
+            form.reset({
+                role: exp.role,
+                company: exp.company,
+                startDate: exp.startDate,
+                endDate: exp.endDate,
+                description: exp.description
+            });
+        }
+    }, [open, exp, form]);
+
+    const onSubmit = async (data: z.infer<typeof updateExperienceSchema>) => {
         console.log(data);
         try {
-            const result = await createExperience(data);
-            toast.success(result?.message || "Experience created successfully!");
+            const result = await updateExperience(exp.id,data);
+            toast.success(result?.message || "Experience updated successfully!");
             setOpen(false)
         } catch (error) {
             showError(error)
@@ -66,7 +82,7 @@ const ExperienceModal = () => {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button className="cursor-pointer" variant={"secondary"}>Add Experience</Button>
+                <Button className="cursor-pointer hover:text-yellow-500" size={"sm"}><Pencil /></Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px] max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
@@ -74,7 +90,7 @@ const ExperienceModal = () => {
                     <DialogDescription></DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
-                    <form id='add-experience' onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+                    <form id='update-experience' onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
                         <FormField
                             control={form.control}
                             name="role"
@@ -162,7 +178,7 @@ const ExperienceModal = () => {
                     </DialogClose>
                     <Button
                         // disabled={isLoading}
-                        form="add-experience" type="submit" variant="ghost" className="cursor-pointer hover:text-green-500">
+                        form="update-experience" type="submit" variant="ghost" className="cursor-pointer hover:text-green-500">
                         {/* {isLoading ? ("Submitting...") : ("Submit")} */}
                         Submit
                     </Button>
@@ -172,4 +188,4 @@ const ExperienceModal = () => {
     );
 };
 
-export default ExperienceModal;
+export default UpdateExperienceModal;

@@ -16,15 +16,15 @@ import UpdateProjectModal from "./UpdateProjectModal";
 const ProjectTable = ({ project }: { project: Project }) => {
 
     const handleDelete = async () => {
-            if (!confirm("Are you sure you want to delete this project?")) return;
-    
-            try {
-                const result = await deleteProject(project.id);
-                toast.success(result?.message || "Project deleted successfully");
-            } catch (error) {
-                showError(error)
-            }
-        };
+        if (!confirm("Are you sure you want to delete this project?")) return;
+
+        try {
+            const result = await deleteProject(project.id);
+            toast.success(result?.message || "Project deleted successfully");
+        } catch (error) {
+            showError(error)
+        }
+    };
 
     return (
         <TableRow>
@@ -33,7 +33,7 @@ const ProjectTable = ({ project }: { project: Project }) => {
             <TableCell>
                 <div className="relative w-10 h-10">
                     <Image
-                        src={project?.thumbnail ||"https://i.ibb.co/gMgsqtM9/Abid-Shadat-Noor.jpg"}
+                        src={project?.thumbnail || "https://i.ibb.co/gMgsqtM9/Abid-Shadat-Noor.jpg"}
                         alt={project?.title}
                         fill
                         sizes="40px"
