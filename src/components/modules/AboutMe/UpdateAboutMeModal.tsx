@@ -22,16 +22,17 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Plus } from "lucide-react";
-import { createAboutMe } from "@/actions/aboutMe";
+import { Pencil } from "lucide-react";
+import { updateAboutMe } from "@/actions/aboutMe";
 import { toast } from "sonner";
+import { AboutMe } from "@/types";
 import { showError } from "@/utils/showError";
 
-const aboutSchema = z.object({
+const updateAboutSchema = z.object({
     name: z.string().min(1, "Name is required"),
     title: z.string().min(1, "Title is required"),
     bio: z.string().min(1, "Bio is required"),
@@ -42,11 +43,11 @@ const aboutSchema = z.object({
     resumeUrl: z.url("Resume URL must be a valid URL").optional(),
 })
 
-const AddAboutMeModal = () => {
+const UpdateAboutMeModal = ({ about }: { about: AboutMe }) => {
     const [open, setOpen] = useState(false);
 
-    const form = useForm<z.infer<typeof aboutSchema>>({
-        resolver: zodResolver(aboutSchema),
+    const form = useForm<z.infer<typeof updateAboutSchema>>({
+        resolver: zodResolver(updateAboutSchema),
         defaultValues: {
             name: "",
             title: "",
@@ -59,7 +60,23 @@ const AddAboutMeModal = () => {
         },
     })
 
-    const onSubmit = async (data: z.infer<typeof aboutSchema>) => {
+    useEffect(() => {
+        if (open && about) {
+            form.reset({
+                name: about.name,
+                title: about.title.join(", ") || "",
+                bio: about.bio,
+                profileImage: about.profileImage,
+                email: about.email,
+                phone: about.phone,
+                location: about.location,
+                resumeUrl: about.resumeUrl,
+            });
+        }
+    }, [open, about, form]);
+
+
+    const onSubmit = async (data: z.infer<typeof updateAboutSchema>) => {
         const aboutData = {
             ...data,
             title: data.title
@@ -67,19 +84,21 @@ const AddAboutMeModal = () => {
                 .split(",")
                 .map((tit) => tit.trim()),
         }
+
         try {
-            const result = await createAboutMe(aboutData);
-            toast.success(result?.message || "About me crated successfully!");
+            const result = await updateAboutMe(about.id, aboutData);
+            toast.success(result?.message || "About me updated successfully!");
             setOpen(false)
         } catch (error) {
             showError(error)
         }
     }
 
+
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button className="cursor-pointer hover:text-green-500" size={"sm"} variant={"default"}><Plus /></Button>
+                <Button className="cursor-pointer hover:text-yellow-500" size={"sm"}><Pencil /></Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px] md:max-w-md lg:max-w-xl max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
@@ -87,7 +106,7 @@ const AddAboutMeModal = () => {
                     <DialogDescription></DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
-                    <form id='add-about-me' onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+                    <form id='update-about-me' onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
                         <FormField
                             control={form.control}
                             name="name"
@@ -219,7 +238,7 @@ const AddAboutMeModal = () => {
                     </DialogClose>
                     <Button
                         // disabled={isLoading}
-                        form="add-about-me" type="submit" variant="ghost" className="cursor-pointer hover:text-green-500">
+                        form="update-about-me" type="submit" variant="ghost" className="cursor-pointer hover:text-green-500">
                         {/* {isLoading ? ("Submitting...") : ("Submit")} */}
                         Submit
                     </Button>
@@ -229,4 +248,4 @@ const AddAboutMeModal = () => {
     );
 };
 
-export default AddAboutMeModal;
+export default UpdateAboutMeModal;

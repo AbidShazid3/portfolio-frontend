@@ -10,6 +10,7 @@ import AboutMeTable from '@/components/modules/AboutMe/AboutMeTable';
 
 const MePage = async () => {
     const {data: aboutMe} = await getAboutMe();
+
     return (
             <div className="border border-muted">
                 <Table>
