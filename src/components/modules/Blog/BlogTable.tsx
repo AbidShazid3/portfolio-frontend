@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/table"
 import { Blog } from "@/types";
 import { showError } from "@/utils/showError";
-import { Pencil, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import UpdateBlogModal from "./UpdateBlogModal";
 

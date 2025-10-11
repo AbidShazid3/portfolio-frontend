@@ -27,7 +27,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { showError } from "@/utils/showError";
 import { toast } from "sonner";
-import { createBlog, updateBlog } from "@/actions/blog";
+import { updateBlog } from "@/actions/blog";
 import { Pencil } from "lucide-react";
 import { Blog } from "@/types";
 
@@ -82,7 +82,7 @@ const UpdateBlogModal = ({ blog }: { blog: Blog }) => {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button className="cursor-pointer" size={"sm"}><Pencil /></Button>
+                <Button className="cursor-pointer hover:text-yellow-500" size={"sm"}><Pencil /></Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>

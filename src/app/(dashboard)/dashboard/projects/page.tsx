@@ -9,14 +9,16 @@ import {
 import { Project } from '@/types';
 import ProjectTable from '@/components/modules/Project/ProjectTable';
 import AddProjectModal from '@/components/modules/Project/AddProjectModal';
+import { getUser } from '@/actions/auth';
 
 const ProjectsPage = async() => {
     const { data: projects } = await getProjects();
+    const {data: user} = await getUser();
     return (
         <div>
             <div className="flex items-center justify-between my-5">
-                <h1 className="text-xl font-semibold">Total Blogs: {projects.length}</h1>
-                <AddProjectModal/>
+                <h1 className="text-xl font-semibold">Total Projects: {projects.length}</h1>
+                <AddProjectModal user={user} />
             </div>
             <div className="border border-muted">
                 <Table>

@@ -22,16 +22,17 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { User } from "@/types";
-import { createBlog } from "@/actions/blog";
+import { Project} from "@/types";
 import { toast } from "sonner";
 import { showError } from "@/utils/showError";
+import { Pencil } from "lucide-react";
+import { updateProject } from "@/actions/project";
 
-const projectSchema = z.object({
+const updateProjectSchema = z.object({
     title: z.string().min(1, "Title is required"),
     description: z.string().min(1, "Description is required"),
     thumbnail: z.url("Thumbnail must be a valid URL").optional(),
@@ -42,11 +43,11 @@ const projectSchema = z.object({
     techStack: z.string().min(1, "TechStack is required"),
 })
 
-const AddProjectModal = ({ user }: { user: User }) => {
+const UpdateProjectModal = ({project} : {project: Project}) => {
     const [open, setOpen] = useState(false);
 
-    const form = useForm<z.infer<typeof projectSchema>>({
-        resolver: zodResolver(projectSchema),
+    const form = useForm<z.infer<typeof updateProjectSchema>>({
+        resolver: zodResolver(updateProjectSchema),
         defaultValues: {
             title: "",
             description: "",
@@ -59,7 +60,22 @@ const AddProjectModal = ({ user }: { user: User }) => {
         },
     })
 
-    const onSubmit = async (data: z.infer<typeof projectSchema>) => {
+    useEffect(() => {
+        if (open && project) {
+            form.reset({
+                title: project.title,
+                description: project.description,
+                thumbnail: project.thumbnail || "",
+                liveUrl: project.liveUrl,
+                frontendRepo: project.frontendRepo,
+                backendRepo: project.backendRepo,
+                features: project.features?.join(", ") || "",
+                techStack: project.techStack?.join(", ") || "",
+            });
+        }
+    }, [open, project, form]);
+
+    const onSubmit = async (data: z.infer<typeof updateProjectSchema>) => {
         const modifiedData = {
             ...data,
             features: data.features
@@ -70,11 +86,10 @@ const AddProjectModal = ({ user }: { user: User }) => {
                 .toString()
                 .split(",")
                 .map((tech) => tech.trim()),
-            authorId: user.id
         }
         try {
-            const result = await createBlog(modifiedData);
-            toast.success(result?.message || "Blog created successfully!");
+            const result = await updateProject(project.id ,modifiedData);
+            toast.success(result?.message || "Blog updated successfully!");
             setOpen(false)
         } catch (error) {
             showError(error)
@@ -84,7 +99,7 @@ const AddProjectModal = ({ user }: { user: User }) => {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button className="cursor-pointer" variant={"secondary"}>Add Project</Button>
+                <Button className="cursor-pointer hover:text-yellow-500" size={"sm"}><Pencil /></Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px] md:max-w-md lg:max-w-xl max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
@@ -92,7 +107,7 @@ const AddProjectModal = ({ user }: { user: User }) => {
                     <DialogDescription></DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
-                    <form id='add-project' onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+                    <form id='update-project' onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
                         <FormField
                             control={form.control}
                             name="title"
@@ -224,7 +239,7 @@ const AddProjectModal = ({ user }: { user: User }) => {
                     </DialogClose>
                     <Button
                         // disabled={isLoading}
-                        form="add-project" type="submit" variant="ghost" className="cursor-pointer hover:text-green-500">
+                        form="update-project" type="submit" variant="ghost" className="cursor-pointer hover:text-green-500">
                         {/* {isLoading ? ("Submitting...") : ("Submit")} */}
                         Submit
                     </Button>
@@ -234,4 +249,4 @@ const AddProjectModal = ({ user }: { user: User }) => {
     );
 };
 
-export default AddProjectModal;
+export default UpdateProjectModal;
