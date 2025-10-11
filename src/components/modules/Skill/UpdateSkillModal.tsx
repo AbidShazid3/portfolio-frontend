@@ -22,7 +22,7 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -32,22 +32,23 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { SkillCategory } from "@/types";
-import { createSkill } from "@/actions/skill";
+import { Skill, SkillCategory } from "@/types";
+import { updateSkill } from "@/actions/skill";
 import { toast } from "sonner";
 import { showError } from "@/utils/showError";
+import { Pencil } from "lucide-react";
 
-const skillSchema = z.object({
+const updateSkillSchema = z.object({
     name: z.string().min(1, "Skill name is required"),
     iconUrl: z.url("Icon Url must be a valid URL"),
     categoryId: z.string().min(1, "Category is required")
 })
 
-const SkillModal = ({ categories }: { categories: SkillCategory[] }) => {
+const UpdateSkillModal = ({ categories, skill }: { categories: SkillCategory[]; skill: Skill }) => {
     const [open, setOpen] = useState(false);
 
-    const form = useForm<z.infer<typeof skillSchema>>({
-        resolver: zodResolver(skillSchema),
+    const form = useForm<z.infer<typeof updateSkillSchema>>({
+        resolver: zodResolver(updateSkillSchema),
         defaultValues: {
             name: "",
             iconUrl: "",
@@ -55,14 +56,24 @@ const SkillModal = ({ categories }: { categories: SkillCategory[] }) => {
         },
     })
 
-    const onSubmit = async (data: z.infer<typeof skillSchema>) => {
+    useEffect(() => {
+        if (open && skill) {
+            form.reset({
+                name: skill.name,
+                iconUrl: skill.iconUrl,
+                categoryId: skill.categoryId.toString(),
+            });
+        }
+    }, [open, skill, form]);
+
+    const onSubmit = async (data: z.infer<typeof updateSkillSchema>) => {
         const skillData = {
             ...data,
             categoryId: Number(data.categoryId)
         }
         try {
-            const result = await createSkill(skillData);
-            toast.success(result?.message || "Skill created successfully!");
+            const result = await updateSkill( skill.id,skillData);
+            toast.success(result?.message || "Skill updated successfully!");
             setOpen(false)
         } catch (error) {
             showError(error)
@@ -72,7 +83,7 @@ const SkillModal = ({ categories }: { categories: SkillCategory[] }) => {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button className="cursor-pointer" variant={"secondary"}>Add Skill</Button>
+                <Button className="cursor-pointer hover:text-yellow-500" size={"sm"}><Pencil /></Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px] max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
@@ -80,7 +91,7 @@ const SkillModal = ({ categories }: { categories: SkillCategory[] }) => {
                     <DialogDescription></DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
-                    <form id='add-skill' onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+                    <form id='update-skill' onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
                         <FormField
                             control={form.control}
                             name="name"
@@ -145,7 +156,7 @@ const SkillModal = ({ categories }: { categories: SkillCategory[] }) => {
                     </DialogClose>
                     <Button
                         // disabled={isLoading}
-                        form="add-skill" type="submit" variant="ghost" className="cursor-pointer hover:text-green-500">
+                        form="update-skill" type="submit" variant="ghost" className="cursor-pointer hover:text-green-500">
                         {/* {isLoading ? ("Submitting...") : ("Submit")} */}
                         Submit
                     </Button>
@@ -155,4 +166,4 @@ const SkillModal = ({ categories }: { categories: SkillCategory[] }) => {
     );
 };
 
-export default SkillModal;
+export default UpdateSkillModal;

@@ -1,33 +1,25 @@
 "use client"
 
-import { Skill } from "@/types";
+import { Skill, SkillCategory } from "@/types";
 import { Button } from "@/components/ui/button";
 import {
     TableCell,
     TableRow,
 } from "@/components/ui/table"
-import { Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { showError } from "@/utils/showError";
+import { deleteSkill } from "@/actions/skill";
+import UpdateSkillModal from "./UpdateSkillModal";
+import { Trash2 } from "lucide-react";
 
-const SkillTable = ({ skill }: { skill: Skill }) => {
+const SkillTable = ({ skill, categories }: { skill: Skill; categories: SkillCategory[]}) => {
 
-    const handleDelete = async (id: string) => {
+    const handleDelete = async () => {
         if (!confirm("Are you sure you want to delete this skill?")) return;
 
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/skill/${id}`, {
-                method: "DELETE",
-                credentials: "include",
-            });
-
-            if (!res.ok) {
-                const errorText = await res.text();
-                throw new Error(errorText || "Failed to delete skill");
-            }
-
-            toast.success("Skill deleted successfully");
-            
+            const result = await deleteSkill(skill.id);
+            toast.success(result?.message || "Skill deleted successfully");
         } catch (error) {
             showError(error)
         }
@@ -42,9 +34,9 @@ const SkillTable = ({ skill }: { skill: Skill }) => {
                 <Button
                     className="hover:text-red-600 cursor-pointer"
                     size={"sm"}
-                    onClick={() => handleDelete(skill.id.toString())}
+                    onClick={handleDelete}
                 ><Trash2 /></Button>
-                <Button className="cursor-pointer hover:text-green-600" size={"sm"}><Pencil /></Button>
+                <UpdateSkillModal categories={categories} skill={skill} />
             </TableCell>
         </TableRow >
     );

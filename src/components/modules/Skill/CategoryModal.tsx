@@ -44,7 +44,7 @@ const CategoryModal = () => {
     })
 
     const onSubmit = async (data: z.infer<typeof categorySchema>) => {
-        console.log(data);
+
         try {
             const result = await createCategory(data);
             toast.success(result?.message || "Skill Category created successfully!");

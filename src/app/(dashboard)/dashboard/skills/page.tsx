@@ -32,7 +32,7 @@ const SkillsPage = async() => {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {skills.map((skill: Skill) => <SkillTable key={skill.id} skill={skill}></SkillTable>)}
+                        {skills.map((skill: Skill) => <SkillTable key={skill.id} categories={categories} skill={skill}></SkillTable>)}
                     </TableBody>
 
                 </Table>
